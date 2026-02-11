@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  my-unit-test:
+  unit-test:
     runs-on: ubuntu-latest
 
     steps:
