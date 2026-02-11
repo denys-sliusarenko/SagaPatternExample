@@ -17,16 +17,32 @@ jobs:
           dotnet-version: '10.0.x'
 
       - run: dotnet restore
-
       - run: dotnet build --configuration Release --no-restore
 
-      - name: Run tests with coverage threshold 80%
+      - name: Run tests with coverage
         run: |
           dotnet test \
             --configuration Release \
             --no-build \
             /p:CollectCoverage=true \
-            /p:CoverletOutputFormat=cobertura,lcow \
+            /p:CoverletOutputFormat=cobertura \
+            /p:CoverletOutput=./coverage/ \
             /p:Threshold=80 \
             /p:ThresholdType=line \
             /p:ThresholdStat=total
+
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Generate HTML coverage report
+        run: |
+          reportgenerator \
+            -reports:**/coverage.cobertura.xml \
+            -targetdir:coverage-report \
+            -reporttypes:Html
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report
