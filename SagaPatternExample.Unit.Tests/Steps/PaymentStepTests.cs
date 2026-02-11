@@ -9,15 +9,13 @@ public class PaymentStepTests
     {
         // Arrange
         var paymentStep = new PaymentStep();
-        using var sw = new StringWriter();
-        Console.SetOut(sw);
+        using var console = new ConsoleCapture();
 
         // Act
         await paymentStep.ExecuteAsync();
 
         // Assert
-        var output = sw.ToString().Trim();
-        Assert.Equal("Write-off of funds", output);
+        Assert.Equal("Write-off of funds", console.Output.ToString().Trim());
     }
 
     [Fact]
@@ -25,14 +23,12 @@ public class PaymentStepTests
     {
         // Arrange
         var paymentStep = new PaymentStep();
-        using var sw = new StringWriter();
-        Console.SetOut(sw);
+        using var console = new ConsoleCapture();
 
         // Act
         await paymentStep.CompensateAsync();
 
         // Assert
-        var output = sw.ToString().Trim();
-        Assert.Equal("Refund", output);
+        Assert.Equal("Refund", console.Output.ToString().Trim());
     }
 }
