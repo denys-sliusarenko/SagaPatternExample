@@ -26,7 +26,7 @@ jobs:
             --configuration Release \
             --no-build \
             /p:CollectCoverage=true \
-            /p:CoverletOutputFormat=cobertura \
+            /p:CoverletOutputFormat=cobertura,lcow \
             /p:Threshold=80 \
             /p:ThresholdType=line \
             /p:ThresholdStat=total
