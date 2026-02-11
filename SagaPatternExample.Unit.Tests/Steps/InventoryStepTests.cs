@@ -3,7 +3,6 @@
 namespace SagaPatternExample.Unit.Tests.Steps;
 
 [Collection("Sequential")]
-
 public class InventoryStepTests
 {
     [Fact]
