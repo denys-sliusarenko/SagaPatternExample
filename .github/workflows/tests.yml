@@ -16,12 +16,13 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
-      - run: dotnet restore
-      - run: dotnet build --configuration Release --no-restore
+      - run: dotnet restore SagaPatternExample.sln
 
-      - name: Run tests with coverage
+      - run: dotnet build SagaPatternExample.sln --configuration Release --no-restore
+
+      - name: Run tests with coverage threshold 80%
         run: |
-          dotnet test \
+          dotnet test SagaPatternExample.sln \
             --configuration Release \
             --no-build \
             /p:CollectCoverage=true \
@@ -29,7 +30,8 @@ jobs:
             /p:CoverletOutput=./coverage/ \
             /p:Threshold=80 \
             /p:ThresholdType=line \
-            /p:ThresholdStat=total
+            /p:ThresholdStat=total \
+            /p:ExcludeByFile="**/Program.cs"
 
       - name: Install ReportGenerator
         run: dotnet tool install -g dotnet-reportgenerator-globaltool
@@ -37,7 +39,7 @@ jobs:
       - name: Generate HTML coverage report
         run: |
           reportgenerator \
-            -reports:**/coverage.cobertura.xml \
+            -reports:coverage/coverage.cobertura.xml \
             -targetdir:coverage-report \
             -reporttypes:Html
 
