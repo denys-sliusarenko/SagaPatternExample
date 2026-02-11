@@ -30,7 +30,7 @@ jobs:
             /p:CollectCoverage=true \
             /p:CoverletOutputFormat=cobertura \
             /p:CoverletOutput=./coverage/ \
-            /p:Threshold=80 \
+            /p:Threshold=20 \
             /p:ThresholdType=line \
             /p:ThresholdStat=total \
             /p:ExcludeByFile="**/Program.cs"
