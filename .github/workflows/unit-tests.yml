@@ -1,0 +1,52 @@
+name: .NET 10 CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - run: dotnet restore SagaPatternExample/SagaPatternExample.csproj
+      - run: dotnet restore SagaPatternExample.Unit.Tests/SagaPatternExample.Unit.Tests.csproj
+
+      - run: dotnet build SagaPatternExample/SagaPatternExample.csproj --configuration Release --no-restore
+      - run: dotnet build SagaPatternExample.Unit.Tests/SagaPatternExample.Unit.Tests.csproj --configuration Release --no-restore
+
+      - name: Run tests with coverage threshold 80%
+        run: |
+          dotnet test SagaPatternExample.Unit.Tests/SagaPatternExample.Unit.Tests.csproj \
+            --configuration Release \
+            --no-build \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=cobertura \
+            /p:CoverletOutput=../coverage/ \
+            /p:Threshold=80 \
+            /p:ThresholdType=line \
+            /p:ThresholdStat=total \
+            /p:ExcludeByFile="**/Program.cs"
+
+      - name: Install ReportGenerator
+        run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+      - name: Generate HTML coverage report
+        run: |
+          reportgenerator \
+            -reports:coverage/coverage.cobertura.xml \
+            -targetdir:coverage-report \
+            -reporttypes:Html
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage-report

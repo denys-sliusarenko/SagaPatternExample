@@ -1,4 +1,6 @@
-﻿namespace SagaPatternExample;
+﻿using SagaPatternExample.Steps;
+
+namespace SagaPatternExample;
 
 public class SagaOrchestrator
 {
