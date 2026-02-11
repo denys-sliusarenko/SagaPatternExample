@@ -2,6 +2,8 @@
 
 namespace SagaPatternExample.Unit.Tests.Steps;
 
+[Collection("Sequential")]
+
 public class PaymentStepTests
 {
     [Fact]
