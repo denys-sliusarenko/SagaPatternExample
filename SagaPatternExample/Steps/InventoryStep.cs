@@ -1,4 +1,4 @@
-﻿namespace SagaPatternExample;
+﻿namespace SagaPatternExample.Steps;
 
 public class InventoryStep : ISagaStep
 {
