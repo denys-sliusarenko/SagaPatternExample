@@ -22,7 +22,7 @@ jobs:
 
       - name: Run tests with coverage threshold 80%
         run: |
-          dotnet test SagaPatternExample.sln \
+          dotnet test SagaPatternExample.Unit.Tests.sln \
             --configuration Release \
             --no-build \
             /p:CollectCoverage=true \
