@@ -20,5 +20,13 @@ jobs:
 
       - run: dotnet build --configuration Release --no-restore
 
-      - name: Run tests with coverage
-        run: dotnet test --configuration Release --no-build --collect:"XPlat Code Coverage"
+      - name: Run tests with coverage threshold 80%
+        run: |
+          dotnet test \
+            --configuration Release \
+            --no-build \
+            /p:CollectCoverage=true \
+            /p:CoverletOutputFormat=cobertura \
+            /p:Threshold=80 \
+            /p:ThresholdType=line \
+            /p:ThresholdStat=total
